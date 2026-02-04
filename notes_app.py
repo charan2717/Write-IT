@@ -770,37 +770,50 @@ class NotesApp:
         self.animate_status_bar(f"Theme changed to {self.theme} mode")
 
     def on_text_modified(self, event=None):
+        if not self.text_area.edit_modified():
+            return
+
         # Reset the modified flag
         self.text_area.edit_modified(False)
-        
-        # Get the current insert position
-        insert_pos = self.text_area.index(tk.INSERT)
-        
-        # Apply current formatting to the insert position
-        self.apply_current_formatting(insert_pos)
 
-    def apply_current_formatting(self, position):
+        # Apply formatting to the most recently inserted character(s)
+        insert_pos = self.text_area.index(tk.INSERT)
+        start_pos = self.text_area.index(f"{insert_pos}-1c")
+        if self.text_area.compare(start_pos, "<", "1.0"):
+            start_pos = "1.0"
+        if self.text_area.compare(start_pos, "<", insert_pos):
+            self.apply_current_formatting(start_pos, insert_pos)
+
+    def apply_current_formatting(self, start_pos, end_pos):
         # Apply bold formatting if active
         if self.current_format['bold']:
-            self.text_area.tag_add("bold", position)
-        
+            self.text_area.tag_add("bold", start_pos, end_pos)
+
         # Apply italic formatting if active
         if self.current_format['italic']:
-            self.text_area.tag_add("italic", position)
-        
+            self.text_area.tag_add("italic", start_pos, end_pos)
+
         # Apply underline formatting if active
         if self.current_format['underline']:
-            self.text_area.tag_add("underline", position)
-        
+            self.text_area.tag_add("underline", start_pos, end_pos)
+
         # Apply font size if different from default
         if self.current_format['font_size'] != self.settings['font_size']:
             tag_name = f"size_{self.current_format['font_size']}"
-            self.text_area.tag_add(tag_name, position)
-        
+            self.text_area.tag_configure(
+                tag_name,
+                font=(self.current_format['font_family'], self.current_format['font_size'])
+            )
+            self.text_area.tag_add(tag_name, start_pos, end_pos)
+
         # Apply font family if different from default
         if self.current_format['font_family'] != self.settings['font_family']:
             tag_name = f"family_{self.current_format['font_family']}"
-            self.text_area.tag_add(tag_name, position)
+            self.text_area.tag_configure(
+                tag_name,
+                font=(self.current_format['font_family'], self.current_format['font_size'])
+            )
+            self.text_area.tag_add(tag_name, start_pos, end_pos)
 
     def on_tab_canvas_configure(self, event):
         # Update the scrollregion to encompass the inner frame
