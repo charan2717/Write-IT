@@ -3,7 +3,7 @@
 **Write It** is a free, open-source notes editor built with Python. It’s simple, fast, and works offline!
 
 🔽 **Download Now**  
-👉 [Download Write It (.exe)](https://drive.google.com/file/d/188bg6_MJTYIb-riLlE5Zc6w7UE8Og5hB/view?usp=sharing)
+👉 [Download Write It (.exe)]()
 
 🔓 Licensed under [GNU GPL v3](LICENSE)
 
@@ -23,11 +23,11 @@
 
 - Make sure that the requirements in the source code are installed
 - Open command Prompt and use this
-- "File path location" --noconfirm --onefile --windowed --name "Write it V-2a(You can change the name)" notes_app.py
+- "File path location" --noconfirm --onefile --windowed --name "Write-It(You can change the name)" notes_app.py
 
 ## News
 
-- The exe file is still considered to be a beta version becuase there are bugs that needs to be solved.
+- The exe file is released as its first official version. Any Bugs and Fixes to be made let us know
 - Another few features are also needed to be added.
 - If anyone is willing to help in this project. Mail : charanachanta2@gmail.com.
 
